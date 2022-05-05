@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='c!')
+bot = commands.Bot(description="GACTF Bot",command_prefix='c!')
 
 @bot.event
 async def on_ready():
@@ -12,10 +12,11 @@ async def on_ready():
 
 # -=-=-=-=- Comandos -=-=-=-=-
 
-@bot.command()
+@bot.command(help='Verifica se o BOT está on.\nUso: c!start', brief="Verifica se o BOT está on.")
 # c!start : Verifica se o BOT está on.
 async def start(ctx):
     await ctx.send('Tamo on :sunglasses:')
+    await ctx.message.delete()
 
 
 @bot.command(name="newctf", help='Cria um embed sobre o novo ctf.\nUso: c!ctfon --name Expertum --difficulty Easy --flags 3 --time "1 Semana (28 abr 2022 18:00 até 05 mai 2022 18:00)" --hints 3 --delay 2d', brief="Cria um embed sobre o novo ctf.")
@@ -44,6 +45,7 @@ async def embedCtf(ctx):
     
     await ctx.channel.send(embed=embedVar)
     await ctx.channel.send('||<@&824041124728799302>||')
+    await ctx.message.delete()
 
 
 @bot.command(name="say", help='Faz o bot "falar" a mensagem desejada.\nUso: c!say Olá!', brief="Exibe a mensagem desejada no chat")
@@ -51,6 +53,8 @@ async def embedCtf(ctx):
 # c!say msg : Faz o bot falar a msg
 async def say(ctx, *, arg):
     await ctx.channel.send(arg)
+    await ctx.message.delete()
+
 
 
 """
@@ -69,9 +73,6 @@ async def fala(ctx, *args):
 async def on_command_error(ctx, error):
     if isinstance(error, commands.errors.CheckFailure):
         await ctx.send(f'{ctx.message.author}, você não tem permissão para executar o comando "{ctx.command}".')
-
-
-
 
 
 
