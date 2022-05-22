@@ -19,17 +19,36 @@ async def start(ctx):
     await ctx.message.delete()
 
 
-@bot.command(name="newctf", help='Cria um embed sobre o novo ctf.\nUso: c!ctfon --name Expertum --difficulty Easy --flags 3 --time "1 Semana (28 abr 2022 18:00 até 05 mai 2022 18:00)" --hints 3 --delay 2d', brief="Cria um embed sobre o novo ctf.")
+@bot.command(name="newctf", help='Cria um embed sobre o novo ctf.\nUso: c!newctf --name Expertum --difficulty Easy --flags 3 --time "1 Semana (28 abr 2022 18:00 até 05 mai 2022 18:00)" --hints 3 --delay 2d', brief="Cria um embed sobre o novo ctf.")
 # c!newctf : Manda a mensagem embed sobre o novo ctf
-async def embedCtf(ctx):
-    nome="Expertum"
-    dificuldade="Easy"
-    flags=3
-    descricao=f'Neste desafio você tem que capturar {flags} FLAGS! Temos uma plataforma para ver os desafios, hints, pontuar as flags e muito mais! Basta você se registrar na plataforma para jogar e clicar na aba "Challenges" para ver os desafios.'
-    duracao="1 Semana (28 abr 2022 18:00 até 05 mai 2022 18:00)"
-    hints="""1º Hint: {hint1}
+async def embedCtf(ctx, *args):
+    argsList = []
+    for arg in args:
+        argsList.append(arg)
+    if argsList[0] == "--name" or argsList[0] == "-n":
+        nome = argsList[1]
+    if argsList[2] == "--difficulty" or argsList[2] == "-d":
+        dificuldade = argsList[3]
+    if argsList[4] == "--flags" or argsList[4] == "-f":
+        flags = argsList[5]
+    if argsList[6] == "--time" or argsList[6] == "-t":
+        duracao = argsList[7]
+    if argsList[8] == "--hints" or argsList[8] == "-h":
+        if argsList[9] == '0':
+            hints="Sem hints."
+        elif argsList[9] == '1':
+            hints="Hint: {hint1}"
+        elif argsList[9] == '2':
+            hints="""1º Hint: {hint1}
+    2º Hint: {hint2}"""
+        elif argsList[9] == '3':
+            hints="""1º Hint: {hint1}
     2º Hint: {hint2}
     3º Hint: {hint3}"""
+        elif argsList[9] != 1 and 2 and 3:
+            hints='-'
+
+    descricao=f'Neste desafio você tem que capturar {flags} FLAGS! Temos uma plataforma para ver os desafios, hints, pontuar as flags e muito mais! Basta você se registrar na plataforma para jogar e clicar na aba "Challenges" para ver os desafios.'
 
     mensagemFinal="Qualquer duvida ou problema mande sua mensagem no canal <#719675854149517372> ou para os ADMs <@!248535350891380736> e <@!339396162543157248>"
 
@@ -44,7 +63,8 @@ async def embedCtf(ctx):
     embedVar.add_field(name="឵឵឵", value=mensagemFinal, inline=False) # Coloquei um caractere (Unicode: U+17B5) que não renderiza no discord para conseguir enviar a mensagem sem o name aparecer.
     
     await ctx.channel.send(embed=embedVar)
-    await ctx.channel.send('||<@&824041124728799302>||')
+    #await ctx.channel.send('||<@&824041124728799302>||') # marcando o cargo CTF PLAYER DE
+    await ctx.channel.send('||Marcar os ctf player||')
     await ctx.message.delete()
 
 
